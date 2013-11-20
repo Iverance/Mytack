@@ -2,11 +2,16 @@
 <html>
     <head>
 		<script src="jQuery.js"></script>
+		<script type="text/javascript" src="http://www.websnapr.com/js/websnapr.js"></script>
 		<script type="text/javascript" src="js/bootstrap.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap_homepage.css">
 		<title>MyTacks.com</title>
 	</head>
 	<body>
+		
+		
+		
+		
 		
 		<nav class="navbar navbar-inverse" role="navigation">
 		  <!-- Brand and toggle get grouped for better mobile display -->
@@ -87,29 +92,39 @@
 			
 		<!--Tack Object-->
 		<!--<div class="row" style="margin-top:50px;margin-left:50px;float:left;">-->
-		  <div class="col-sm-6 col-md-4" style="margin-left:40px;margin-top:10px;">
+		  <div class="col-sm-6 col-md-3" style="margin-left:40px;margin-top:10px;">
 			<div class="thumbnail">
-			  <img src="img/test.jpg" alt="img/test.jpg">
-			  
-			  
-			  
+			  <!--<img src=img_preview("http://www.yahoo.com/") alt="img/test.jpg">-->
+			  <script>
+			    function img_preview(url) {
+					// Grab the URL from our link
+					var apiKey = 'bTmGswCsoBm9', // Please don't abuse my API key - get your own for free here: http://www.websnapr.com/free_services/
+						thumbail;
+					// Create image thumbnail using Websnapr thumbnail service
+					thumbnail = 'http://images.websnapr.com/?url=' + url + '&key=' + apiKey + '&hash=' + encodeURIComponent(websnapr_hash);
+					//document.write(thumbnail);
+					document.write('<img src='+thumbnail+'>');
+				};
+				img_preview("http://www.yahoo.com/");
+			  </script>
+
 			  <div class="caption">
-				<h3>Title</h3>
+				<h4>Title</h4>
 				<p>This is description<p>
+				<hr style="border-color:#000000">
 				<ul class="media-list" >
 				  <li class="media">
 					<a class="pull-left" href="#">
 					  <img class="media-object" src="img/head.jpg" alt="...">
 					</a>
 					<div class="media-body">
-					  <h4 class="media-heading">Comment</h4>
+					  <h5 class="media-heading">Comment</h5>
 					  
 					</div>
 				  </li>
 				</ul>
 				<p align="right">
-				<a href="#" class="btn btn-primary" role="button">Stamp</a>
-				<a href="#" class="btn btn-default" role="button">Like</a>
+				<a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-search"></span>	</a>
 				</p>
 			  </div>
 			</div>

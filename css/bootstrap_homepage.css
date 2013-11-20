@@ -5270,7 +5270,7 @@ a.list-group-item.active > .badge,
   margin-bottom: 20px;
   line-height: 1.428571429;
   background-color: #ffffff;
-  border: 5px solid #dddddd;
+  border: 2px solid #888888;
   border-radius: 4px;
   -webkit-transition: all 0.2s ease-in-out;
           transition: all 0.2s ease-in-out;
@@ -5509,11 +5509,13 @@ a.thumbnail.active {
 .media-body {
   overflow: hidden;
   zoom: 1;
+  
 }
 
 .media,
 .media .media {
   margin-top: 15px;
+  
 }
 
 .media:first-child {
@@ -5542,6 +5544,7 @@ a.thumbnail.active {
 .media-list {
   padding-left: 0;
   list-style: none;
+  border: 1px solid #BFBFBF;
 }
 
 .list-group {
