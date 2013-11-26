@@ -1,0 +1,36 @@
+			<div href="#" class="thumbnail">
+
+				  <!--The JS function to printout img by url-->
+				  <script>
+					function img_preview(url) {
+						// Grab the URL from our link
+						var apiKey = 'bTmGswCsoBm9', // This is Jeremy's websnapr APIkey
+							thumbail;
+						// Create image thumbnail using Websnapr thumbnail service
+						thumbnail = 'http://images.websnapr.com/?url=' + url + '&key=' + apiKey + '&hash=' + encodeURIComponent(websnapr_hash);
+						document.write('<a target="_blank" style="display: block; margin: 0.5cm" href="'+url+'"><img class="img-thumbnail" src="'+thumbnail+'"></a>');
+					};
+					img_preview("http://www.yahoo.com/");
+				  </script>
+
+					
+				  <div class="caption">
+					<h4>Title</h4>
+					<p>This is description<p>
+					<hr style="border-color:#000000">
+					<ul class="media-list" >
+					  <li class="media">
+						<a class="pull-left" href="#">
+						  <img class="media-object" src="img/head.jpg" alt="...">
+						</a>
+						<div class="media-body">
+						  <h5 class="media-heading">Comment</h5>
+						  
+						</div>
+					  </li>
+					</ul>
+					<p align="right">
+					<a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-search"></span>	</a>
+					</p>
+				  </div>
+				</div>

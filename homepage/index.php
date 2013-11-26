@@ -18,18 +18,15 @@
 			  echo "Failed to connect to MySQL: " . mysqli_connect_error();
 			  exit();
 			}
-			else{
-				if ($result = $con->query("SELECT * FROM tack")) {
-					while($row = mysqli_fetch_array($result))
-					  {
-					  //echo $row['tackName'];
-					  //echo "<br>";
-					  }
-
-					/* free result set */
-					$result->close();
-				}
-			}
+			
+			//grab tack data
+			$result=$con->query("SELECT * FROM tack");
+			if (!$result) {
+				echo 'Could not run query: ' . mysql_error();
+				exit;
+			}			
+			/* free result set */
+					//$result->close();
 			mysqli_close($con);
 		?>
 		
@@ -102,8 +99,9 @@
 		  <div class="col-md-2">
 			<!--the button set section-->
 			<div class="btn-group-vertical center-block" style="margin:10px">
-			  <button type="button" class="btn btn-default">Create Tack</button>
-			  <button type="button" class="btn btn-default">Create Board</button>
+			  <a href = "#creatboard" data-toggle="modal">
+				<button type="button" class="btn btn-default" >Create Board</button>
+			  </a>
 			</div>
 			
 			
@@ -129,20 +127,58 @@
 		  
 		  
 		  <div class="col-md-8">
+		  <div class="row">
 		  
+		  <div class="col-sm-6 col-md-4">
+				<div class="thumbnail">
+				<a href = "#createtack" data-toggle="modal">
+					<img src="img/plus.jpg" style="height:200px;width:200px;display: block; margin: 0.5cm">
+				</a>
+					
+				  <div class="caption">
+					<h4>Create New Tack</h4>
+					<p>Click to create a new tack.<p>
+				  </div>
+				</div>
+
+		  </div>
+		  
+		  
+		  <?php
+			$tack_num=1;
+			//echo mysqli_num_rows($result);
+			
+				while($row = mysqli_fetch_array($result)) {
+					
+					echo "
+					<div class=\"col-sm-6 col-md-4\">
+					<div class=\"thumbnail\">
+					<script>
+						var thumbnail = 'http://images.websnapr.com/?url=".$row['url']."&key=bTmGswCsoBm9&hash=' + encodeURIComponent(websnapr_hash);
+						document.write('<a target=\"_blank\" style=\"display: block; margin: 0.5cm\" href=\"".$row['url']."\"><img class=\"img-thumbnail\" src=\"'+thumbnail+'\"></a>');
+					</script>
+					<div class=\"caption\">
+					<h4>".$row['tackName']."</h4>
+					<p>".$row['tackDescription']."<p>
+					<p align=\"right\">
+					<a class=\"btn btn-primary\" role=\"button\"><span class=\"glyphicon glyphicon-pushpin\"></span>	</a>
+					</p>
+					</div>
+					</div>
+					</div>";
+				}
+		  ?>
 			<!--Tack Object-->
-			<div class="row">
+			
 			  <div class="col-sm-6 col-md-4">
-				<div href="#" class="thumbnail">
+				<div class="thumbnail">
 
 				  <!--The JS function to printout img by url-->
 				  <script>
 					function img_preview(url) {
-						// Grab the URL from our link
-						var apiKey = 'bTmGswCsoBm9', // This is Jeremy's websnapr APIkey
+						var apiKey = 'bTmGswCsoBm9',
 							thumbail;
-						// Create image thumbnail using Websnapr thumbnail service
-						thumbnail = 'http://images.websnapr.com/?url=' + url + '&key=' + apiKey + '&hash=' + encodeURIComponent(websnapr_hash);
+						thumbnail = 'http://images.websnapr.com/?url=' + url + '&key=bTmGswCsoBm9&hash=' + encodeURIComponent(websnapr_hash);
 						document.write('<a target="_blank" style="display: block; margin: 0.5cm" href="'+url+'"><img class="img-thumbnail" src="'+thumbnail+'"></a>');
 					};
 					img_preview("http://www.yahoo.com/");
@@ -171,15 +207,117 @@
 				</div>
 
 			  </div>
-			</div>
+			
 		  
 		  </div>
 		</div>
+		</div>
 		
 		
-			
-			
-			
+		<!--CreateTack form-->
+		<form action="inserttack.php" name="createtack" method="post">
+		<div class = "modal fade" id = "createtack" role ="dialog">
+			<div class ="modal-dialog">
+				<div class = "modal-content">
+					<div class = "modal-header">
+						<h4>Create a Tack</h4>
+					</div>
+					<div class ="modal-body">
+					<b>Enter Tack Name: </b>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="text" name="tackname" id="tackname"  maxlength="12"/><br><br>							
+						<b>Tack Description: </b>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="text" name="tackdesc" id="tackdesc" maxlength="12"/><br><br>
+						<b>Enter Tack URL: </b>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="text" name="tackURL" id="tackURL"  maxlength="12"/><br><br>							
+						<b>Privacy Settings: </b>
+						    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<select name="settings">
+							<option value="private" >Private</option>
+							<option value="public">Public</option>
+						</select><br></br>						
+					</div>
+					<div class = "modal-footer">
+						<a class = "btn btn-default" data-dismiss = "modal">Cancel</a>
+						<a class = "btn btn-primary" data-dismiss = "modal" onclick="submitForm();">Create</a>
+					</div>
+				</div>
+			</div>
+			</div>
+
+			<script type="text/javascript">
+
+			 function submitForm()
+			 {
+				   alert('sub');
+				   document.createtack.submit();
+			 }
+			</script>
+		</form>	
+		
+
+		<form action="insertboard.php" name="create" method="post">
+			<div class = "modal fade" id = "creatboard" role ="dialog">
+			<div class ="modal-dialog">
+				<div class = "modal-content">
+					<div class = "modal-header">
+						<h4>Create a Board</h4>
+					</div>
+					<div class ="modal-body">
+						<fieldset>
+					<legend><i>Enter Board Details:</i></legend>
+					<center>
+					
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<b>Enter Board Name: </b>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="text" name="boardname" id="boardname"  maxlength="20"/><br><br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<b>Enter Description: </b>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="text" name="boarddesc" id="boarddesc" maxlength="100"/><br><br>
+						<b>Select the Privacy Settings: </b>
+						<select name="setting">
+							<option value="private">Private</option>
+							<option value="public">Public</option>
+						</select>
+					
+					</center>
+				</fieldset>	
+					</div>
+					<div class = "modal-footer">
+						<a class = "btn btn-default" data-dismiss = "modal">Cancel</a>
+						<a class = "btn btn-primary" data-dismiss = "modal" onclick="submitForm();">Create</a>
+						
+					
+				</div>
+				</div>
+			</div>
+			</div>
+
+			<script type="text/javascript">
+			 function submitForm()
+			 {
+				   alert('sub');
+				   document.createboard.submit();
+			 }
+			</script>
+		</form>	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
 		
 		
 		
