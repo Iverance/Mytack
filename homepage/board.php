@@ -3,17 +3,19 @@
     <head>
 		<script src="jQuery.js"></script>
 		<script type="text/javascript" src="http://www.websnapr.com/js/websnapr.js"></script>
-		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap_homepage.css">
 		<title>MyTacks.com</title>
 	</head>
 	<body>
+	
 		<?php
 			include ("db_config.php");
-
+			
 			//grab tack data
-			$result=$con->query("SELECT * FROM tack");
-			if (!$result) {
+			$result=$con->query("SELECT * FROM tack WHERE boardId=".$_GET["boardId"]);
+			$result_board=$con->query("SELECT * FROM board WHERE boardId=".$_GET["boardId"]);
+			if (!$result||!$result_board) {
 				echo 'Could not run query: ' . mysql_error();
 				exit;
 			}			
@@ -21,9 +23,7 @@
 					//$result->close();
 			mysqli_close($con);
 		?>
-		
-		
-		
+	
 		<nav class="navbar navbar-inverse" role="navigation">
 		  <!-- Brand and toggle get grouped for better mobile display -->
 		  <div class="navbar-header">
@@ -35,43 +35,10 @@
 			</button>
 			<a href="index.php" class="navbar-brand" >MyTacks.com</a>
 		  </div>
-
+		
 		  <!-- Collect the nav links, forms, and other content for toggling -->
 		  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			<!--<ul class="nav navbar-nav">
-			  <li class="active"><a href="#">Link</a></li>
-			  <li><a href="#">Link</a></li>
-			</ul>
-			<form class="navbar-form navbar-left" role="search">
-			  <div class="form-group">
-				<input type="text" class="form-control" placeholder="Search">
-			  </div>
-			  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Action <span class="caret"></span></button>
-				<ul class="dropdown-menu pull-right">
-				  <li><a href="#">Action</a></li>
-				  <li><a href="#">Another action</a></li>
-				  <li><a href="#">Something else here</a></li>
-				  <li class="divider"></li>
-				  <li><a href="#">Separated link</a></li>
-				</ul>
-			  <button type="submit" class="btn btn-default">Submit</button>
-			</form>-->
-			<div class="col-lg-6" style="margin-top:8px">
-			<div class="input-group">
-			  <input type="text" class="form-control">
-			  <div class="input-group-btn">
-				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span></button>
-				<ul class="dropdown-menu pull-right">
-				  <li><a href="#">Tack</a></li>
-				  <li><a href="#">User</a></li>
-				  <li><a href="#">Both</a></li>
-				</ul>
-			  </div><!-- /btn-group -->
-			  <button type="submit" class="btn btn-default" style="margin-left:10px">
-				<span class="glyphicon glyphicon-search"></span>
-			  </button>
-			</div><!-- /input-group -->
-		  </div><!-- /.col-lg-6 -->
+			
 			<ul class="nav navbar-nav navbar-right">
 			  <li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">UserName <b class="caret"></b></a>
@@ -84,10 +51,10 @@
 			  </li>
 			</ul>
 		  </div><!-- /.navbar-collapse -->
-		</nav>	
+		</nav>
 		
 		
-		
+		<!--the category section-->
 		  <div class="col-md-2">
 			<!--the button set section-->
 			<div class="btn-group-vertical center-block" style="margin:10px">
@@ -116,101 +83,72 @@
 			  </script>
 			</div>
 		  </div>
-		  
-		  
-		  <div class="col-md-8">
-
-		  <!--The add tack object-->
-		  <div class="col-sm-6 col-md-4">
-				<div class="thumbnail">
-				<a href = "#createtack" data-toggle="modal">
-					<img src="img/plus.jpg" style="height:213px;width:200px;display: block; margin: 0.5cm">
-				</a>
-					
-				  <div class="caption">
-					<h4>Create New Tack</h4>
-					<p>Click to create a new tack.<p>
-				  </div>
-				</div>
-
-		  </div>
-		  
-		  
-		  <?php
-			$tack_num=mysqli_num_rows($result);
-			//echo mysqli_num_rows($result);
+		
 			
-				while($row = mysqli_fetch_array($result)) {
-					
-					echo "
-					<div class=\"col-sm-6 col-md-4\">
-					<div class=\"thumbnail\">
-					<script>
-						var thumbnail = 'http://images.websnapr.com/?url=".$row['url']."&key=bTmGswCsoBm9&hash=' + encodeURIComponent(websnapr_hash);
-						document.write('<a target=\"_blank\" style=\"display: block; margin: 0.5cm\" href=\"".$row['url']."\"><img class=\"img-thumbnail\" src=\"'+thumbnail+'\"></a>');
-					</script>
-					<div class=\"caption\">
-					<h4>".$row['tackName']."</h4>
-					<p class=\"tackDes\">".$row['tackDescription']."</p>
-					<p align=\"right\"><a class=\"btn btn-primary\" role=\"button\"><span class=\"glyphicon glyphicon-pushpin\"></span>	</a>
-					</p>
-					</div>
-					</div>
-					</div>";
-				}
-		  ?>
-		  
-		  
-		  
-		 
-		  
-		  
-			<!--Tack Object-->
 			
-			  <div class="col-sm-6 col-md-4">
-				<div class="thumbnail">
-
-				  <!--The JS function to printout img by url-->
-				  <script>
-					function img_preview(url) {
-						var apiKey = 'bTmGswCsoBm9',
-							thumbail;
-						thumbnail = 'http://images.websnapr.com/?url=' + url + '&key=bTmGswCsoBm9&hash=' + encodeURIComponent(websnapr_hash);
-						document.write('<a target="_blank" style="display: block; margin: 0.5cm" href="'+url+'"><img class="img-thumbnail" src="'+thumbnail+'"></a>');
-					};
-					img_preview("http://www.yahoo.com/");
-				  </script>
-
+		<!--Board Object-->
+		  <div class="col-sm-12 col-md-10" >
+			<div class="thumbnail">
+			  <img src="img/board.jpg" alt="img/place1.jpg" width="1000" height="800">
+			  <div class="caption">
+				<?php
+				 if(mysqli_num_rows($result)>0) {
 					
-				  <div class="caption">
-					<h4>Title</h4>
-					<p class="tackDes">YAHOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO<p>
-					<hr style="border-color:#000000">
-					<ul class="media-list" >
-					  <li class="media">
-						<a class="pull-left" href="#">
-						  <img class="media-object" src="img/head.jpg" alt="...">
-						</a>
-						<div class="media-body">
-						  <h5 class="media-heading">Comment</h5>
-						  
+				 }
+				 else {
+					echo "<h3><font color=\"grey\"> This is lonely here!!</font> </h3>";
+				 }
+				?>
+					<div class="row">
+						<div class="col-sm-4 col-md-2" >
+							<a href = "#createtack" data-toggle="modal">
+								<img src="img/plus.jpg" style="height:70px;width:70px;margin-left:10px" alt="...">
+							</a>
 						</div>
-					  </li>
-					</ul>
-					<p align="right">
-					<a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-search"></span>	</a>
-					</p>
-				  </div>
+						<div class="col-sm-8 col-md-8" >
+							<?php
+								$board_info = mysqli_fetch_array($result_board);
+								echo "<center><h1>".$board_info['BoardTitle']."</h1></center>";
+							?>
+						</div>
+					</div>
+					
+					
+					<hr style="border-color:#000000">
+					<div class="row">
+					 <?php
+						$tack_num=mysqli_num_rows($result);
+						//echo mysqli_num_rows($result);
+						
+							while($row = mysqli_fetch_array($result)) {
+								
+								echo "
+								<div class=\"col-sm-6 col-md-4\">
+								<div class=\"thumbnail\">
+								<script>
+									var thumbnail = 'http://images.websnapr.com/?url=".$row['url']."&key=bTmGswCsoBm9&hash=' + encodeURIComponent(websnapr_hash);
+									document.write('<a target=\"_blank\" style=\"display: block; margin: 0.5cm\" href=\"".$row['url']."\"><img class=\"img-thumbnail\" src=\"'+thumbnail+'\"></a>');
+								</script>
+								<div class=\"caption\">
+								<h4>".$row['tackName']."</h4>
+								<p class=\"tackDes\">".$row['tackDescription']."</p>
+								<p align=\"right\">
+								<form>
+								<a class=\"btn btn-danger \" role=\"button\"><span class=\"glyphicon glyphicon-remove\"></span></a>
+								<a class=\"btn btn-primary\" role=\"button\"><span class=\"glyphicon glyphicon-pushpin\"></span></a>
+								</form>
+								</p>
+								</div>
+								</div>
+								</div>";
+							}
+					  ?>
+							
+					</div>
 				</div>
-
-			  </div>
+			</div>
+		  </div>
 			
-		  
-
-		</div>
-		
-		
-		
 		<!--CreateTack form-->
 		<form action="inserttack.php" name="createtack" method="post">
 		<div class = "modal fade" id = "createtack" role ="dialog">
@@ -253,6 +191,8 @@
 			 }
 			</script>
 		</form>	
+		
+		
 		
 		<!--CreateBoard form-->
 		<form action="insertboard.php" name="createboard" method="post">

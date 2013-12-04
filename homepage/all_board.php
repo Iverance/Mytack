@@ -10,9 +10,9 @@
 	<body>
 		<?php
 			include ("db_config.php");
-
+			
 			//grab tack data
-			$result=$con->query("SELECT * FROM tack");
+			$result=$con->query("SELECT * FROM board");
 			if (!$result) {
 				echo 'Could not run query: ' . mysql_error();
 				exit;
@@ -33,45 +33,12 @@
 			  <span class="icon-bar"></span>
 			  <span class="icon-bar"></span>
 			</button>
-			<a href="index.php" class="navbar-brand" >MyTacks.com</a>
+			<a href="index.php" class="navbar-brand">MyTacks.com</a>
 		  </div>
 
 		  <!-- Collect the nav links, forms, and other content for toggling -->
 		  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			<!--<ul class="nav navbar-nav">
-			  <li class="active"><a href="#">Link</a></li>
-			  <li><a href="#">Link</a></li>
-			</ul>
-			<form class="navbar-form navbar-left" role="search">
-			  <div class="form-group">
-				<input type="text" class="form-control" placeholder="Search">
-			  </div>
-			  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Action <span class="caret"></span></button>
-				<ul class="dropdown-menu pull-right">
-				  <li><a href="#">Action</a></li>
-				  <li><a href="#">Another action</a></li>
-				  <li><a href="#">Something else here</a></li>
-				  <li class="divider"></li>
-				  <li><a href="#">Separated link</a></li>
-				</ul>
-			  <button type="submit" class="btn btn-default">Submit</button>
-			</form>-->
-			<div class="col-lg-6" style="margin-top:8px">
-			<div class="input-group">
-			  <input type="text" class="form-control">
-			  <div class="input-group-btn">
-				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span></button>
-				<ul class="dropdown-menu pull-right">
-				  <li><a href="#">Tack</a></li>
-				  <li><a href="#">User</a></li>
-				  <li><a href="#">Both</a></li>
-				</ul>
-			  </div><!-- /btn-group -->
-			  <button type="submit" class="btn btn-default" style="margin-left:10px">
-				<span class="glyphicon glyphicon-search"></span>
-			  </button>
-			</div><!-- /input-group -->
-		  </div><!-- /.col-lg-6 -->
+			
 			<ul class="nav navbar-nav navbar-right">
 			  <li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">UserName <b class="caret"></b></a>
@@ -87,11 +54,11 @@
 		</nav>	
 		
 		
-		
+		<div class="row">
 		  <div class="col-md-2">
 			<!--the button set section-->
 			<div class="btn-group-vertical center-block" style="margin:10px">
-			  <a href = "#createboard" data-toggle="modal">
+			  <a href = "#creatboard" data-toggle="modal">
 				<button type="button" class="btn btn-default" >Create Board</button>
 			  </a>
 			</div>
@@ -119,96 +86,31 @@
 		  
 		  
 		  <div class="col-md-8">
-
-		  <!--The add tack object-->
-		  <div class="col-sm-6 col-md-4">
-				<div class="thumbnail">
-				<a href = "#createtack" data-toggle="modal">
-					<img src="img/plus.jpg" style="height:213px;width:200px;display: block; margin: 0.5cm">
-				</a>
-					
-				  <div class="caption">
-					<h4>Create New Tack</h4>
-					<p>Click to create a new tack.<p>
-				  </div>
-				</div>
-
-		  </div>
-		  
-		  
+		  <div class="row">
 		  <?php
-			$tack_num=mysqli_num_rows($result);
+			$tack_num=1;
 			//echo mysqli_num_rows($result);
 			
 				while($row = mysqli_fetch_array($result)) {
 					
 					echo "
-					<div class=\"col-sm-6 col-md-4\">
+					<div class=\"col-sm-6 col-md-12\">
+					<a href=\"board.php?boardId=".$row['BoardId']."\">
 					<div class=\"thumbnail\">
-					<script>
-						var thumbnail = 'http://images.websnapr.com/?url=".$row['url']."&key=bTmGswCsoBm9&hash=' + encodeURIComponent(websnapr_hash);
-						document.write('<a target=\"_blank\" style=\"display: block; margin: 0.5cm\" href=\"".$row['url']."\"><img class=\"img-thumbnail\" src=\"'+thumbnail+'\"></a>');
-					</script>
+					<img src=\"img/board.jpg\" class=\"img-thumbnail\" >
 					<div class=\"caption\">
-					<h4>".$row['tackName']."</h4>
-					<p class=\"tackDes\">".$row['tackDescription']."</p>
-					<p align=\"right\"><a class=\"btn btn-primary\" role=\"button\"><span class=\"glyphicon glyphicon-pushpin\"></span>	</a>
-					</p>
+					<h4>".$row['BoardTitle']."</h4>
 					</div>
 					</div>
+					</a>
 					</div>";
 				}
 		  ?>
-		  
-		  
-		  
-		 
-		  
-		  
-			<!--Tack Object-->
-			
-			  <div class="col-sm-6 col-md-4">
-				<div class="thumbnail">
-
-				  <!--The JS function to printout img by url-->
-				  <script>
-					function img_preview(url) {
-						var apiKey = 'bTmGswCsoBm9',
-							thumbail;
-						thumbnail = 'http://images.websnapr.com/?url=' + url + '&key=bTmGswCsoBm9&hash=' + encodeURIComponent(websnapr_hash);
-						document.write('<a target="_blank" style="display: block; margin: 0.5cm" href="'+url+'"><img class="img-thumbnail" src="'+thumbnail+'"></a>');
-					};
-					img_preview("http://www.yahoo.com/");
-				  </script>
-
-					
-				  <div class="caption">
-					<h4>Title</h4>
-					<p class="tackDes">YAHOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO<p>
-					<hr style="border-color:#000000">
-					<ul class="media-list" >
-					  <li class="media">
-						<a class="pull-left" href="#">
-						  <img class="media-object" src="img/head.jpg" alt="...">
-						</a>
-						<div class="media-body">
-						  <h5 class="media-heading">Comment</h5>
-						  
-						</div>
-					  </li>
-					</ul>
-					<p align="right">
-					<a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-search"></span>	</a>
-					</p>
-				  </div>
-				</div>
-
-			  </div>
 			
 		  
-
+		  </div>
 		</div>
-		
+		</div>
 		
 		
 		<!--CreateTack form-->
@@ -254,9 +156,9 @@
 			</script>
 		</form>	
 		
-		<!--CreateBoard form-->
-		<form action="insertboard.php" name="createboard" method="post">
-			<div class = "modal fade" id = "createboard" role ="dialog">
+
+		<form action="insertboard.php" name="create" method="post">
+			<div class = "modal fade" id = "creatboard" role ="dialog">
 			<div class ="modal-dialog">
 				<div class = "modal-content">
 					<div class = "modal-header">
@@ -302,6 +204,20 @@
 			 }
 			</script>
 		</form>	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+		
 		
 		
 	</body>
