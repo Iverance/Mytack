@@ -4,8 +4,8 @@
 $db_host = "testing.cm37sfvvvxih.us-west-2.rds.amazonaws.com";
 $db_username = "admin";
 $db_pass = "adminadmin";
-$db_name = "mytacks";
-//echo "Hello world!";
+$db_name = "MyTack1";
+
 @mysql_connect("$db_host","$db_username","$db_pass") or die ("Could not connect to MySQL");
 @mysql_selectdb("$db_name") or die ("No database");
 

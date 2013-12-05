@@ -1,3 +1,23 @@
+<?php
+	session_start();
+	include ("db_config.php");
+	
+	//grab tack data
+	$result=$con->query("SELECT * FROM board");
+	if (!$result) {
+		echo 'Could not run query: ' . mysql_error();
+		exit;
+	}			
+	
+	if(isset($_SESSION['username'])) {
+		$userName = "".$_SESSION['username']."";
+	}
+	
+	/* free result set */
+			//$result->close();
+	mysqli_close($con);
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -7,73 +27,56 @@
 		<link rel="stylesheet" type="text/css" href="css/bootstrap_homepage.css">
 		<title>MyTacks.com</title>
 	</head>
-	<body>
-		<?php
-			include ("db_config.php");
-			
-			//grab tack data
-			$result=$con->query("SELECT * FROM board");
-			if (!$result) {
-				echo 'Could not run query: ' . mysql_error();
-				exit;
-			}			
-			/* free result set */
-					//$result->close();
-			mysqli_close($con);
-		?>
+	<body class="mainBGcolor">
 		
-		
-		
-		<nav class="navbar navbar-inverse" role="navigation">
-		  <!-- Brand and toggle get grouped for better mobile display -->
-		  <div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			  <span class="sr-only">Toggle navigation</span>
-			  <span class="icon-bar"></span>
-			  <span class="icon-bar"></span>
-			  <span class="icon-bar"></span>
-			</button>
-			<a href="index.php" class="navbar-brand">MyTacks.com</a>
-		  </div>
+		<!-- NAVIGATION BAR -->
+		<nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+		  <div class="container" >
+			<div class="navbar-header">
+			  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			  </button>
+			  <a class="navbar-brand" href="index.php" >MyTacks Inc.</a>
+			</div>
+	
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+			  
+				
 
-		  <!-- Collect the nav links, forms, and other content for toggling -->
-		  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			
-			<ul class="nav navbar-nav navbar-right">
-			  <li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">UserName <b class="caret"></b></a>
-				<ul class="dropdown-menu">
-				  <li><a href="#">About us</a></li>
-				  <li><a href="#">Account Setting</a></li>
-				  <li class="divider"></li>
-				  <li><a href="#">Log Out</a></li>
-				</ul>
-			  </li>
-			</ul>
-		  </div><!-- /.navbar-collapse -->
-		</nav>	
-		
-		
-		<div class="row">
-		  <div class="col-md-2">
-			<!--the button set section-->
-			<div class="btn-group-vertical center-block" style="margin:10px">
-			  <a href = "#creatboard" data-toggle="modal">
-				<button type="button" class="btn btn-default" >Create Board</button>
-			  </a>
+				<div class="collapse navbar-collapse navbar-ex1-collapse pull-right">
+				  <dl class="nav navbar-nav">
+					<li><a href="Contact/contact.php">Contact</a></li>
+					<li><a href="logout.php">Logout 
+						<?php 
+							if(isset($_SESSION['username'])) {
+								echo $userName;
+							}
+						?></a></li>
+				  </dl>
+				  
+				  
+				</div><!-- /.navbar-collapse -->
 			</div>
 			
+		  </div><!-- /.container -->
+		</nav>
+		<br><br><br><br>
+		
+		
+		
+		  <div class="col-md-2">
 			
 			<!--the category section-->
 			<div class="list-group center-block" style="margin:10px">
 			  <h2>Category</h2>
-			  <a href="#" class="list-group-item active">
-				Nu Jazz
-			  </a>
-			  <a href="#" class="list-group-item">R&B</a>
-			  <a href="#" class="list-group-item">Rock & Roll</a>
-			  <a href="#" class="list-group-item">House</a>
-			  <a href="#" class="list-group-item">Techo</a>
+			  <a href="#createboard" data-toggle="modal" class="list-group-item">Create Board</a>
+			  <a href="#" class="list-group-item">My Board</a>
+			  <a href="#" class="list-group-item">My Tacks</a>
+			  <a href="#" class="list-group-item">Search Friends</a>
 			  <script>
 				$('.list-group-item').on('click',function(e){
 					var previous = $(this).closest(".list-group").children(".active");
@@ -84,7 +87,7 @@
 			</div>
 		  </div>
 		  
-		  
+
 		  <div class="col-md-8">
 		  <div class="row">
 		  <?php
@@ -110,7 +113,7 @@
 		  
 		  </div>
 		</div>
-		</div>
+		
 		
 		
 		<!--CreateTack form-->
@@ -204,21 +207,6 @@
 			 }
 			</script>
 		</form>	
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
-		
-		
 		
 	</body>
 

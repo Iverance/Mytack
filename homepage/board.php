@@ -1,3 +1,19 @@
+<?php
+	include ("db_config.php");
+	$boardId=$_GET["boardId"];
+	
+	//grab tack data
+	$result=$con->query("SELECT * FROM tack WHERE boardId='$boardId'");
+	$result_board=$con->query("SELECT * FROM board WHERE boardId='$boardId'");
+	if (!$result||!$result_board) {
+		echo 'Could not run query: ' . mysql_error();
+		exit;
+	}			
+	/* free result set */
+			//$result->close();
+	mysqli_close($con);
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -7,73 +23,56 @@
 		<link rel="stylesheet" type="text/css" href="css/bootstrap_homepage.css">
 		<title>MyTacks.com</title>
 	</head>
-	<body>
+	<body class="mainBGcolor">
 	
-		<?php
-			include ("db_config.php");
-			
-			//grab tack data
-			$result=$con->query("SELECT * FROM tack WHERE boardId=".$_GET["boardId"]);
-			$result_board=$con->query("SELECT * FROM board WHERE boardId=".$_GET["boardId"]);
-			if (!$result||!$result_board) {
-				echo 'Could not run query: ' . mysql_error();
-				exit;
-			}			
-			/* free result set */
-					//$result->close();
-			mysqli_close($con);
-		?>
+		<!-- NAVIGATION BAR -->
+		<nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+		  <div class="container" >
+			<div class="navbar-header">
+			  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			  </button>
+			  <a class="navbar-brand" href="index.php" >MyTacks Inc.</a>
+			</div>
 	
-		<nav class="navbar navbar-inverse" role="navigation">
-		  <!-- Brand and toggle get grouped for better mobile display -->
-		  <div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			  <span class="sr-only">Toggle navigation</span>
-			  <span class="icon-bar"></span>
-			  <span class="icon-bar"></span>
-			  <span class="icon-bar"></span>
-			</button>
-			<a href="index.php" class="navbar-brand" >MyTacks.com</a>
-		  </div>
-		
-		  <!-- Collect the nav links, forms, and other content for toggling -->
-		  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+			  
+				
+
+				<div class="collapse navbar-collapse navbar-ex1-collapse pull-right">
+				  <dl class="nav navbar-nav">
+					<li><a href="Contact/contact.php">Contact</a></li>
+					<li><a href="logout.php">Logout 
+						<?php 
+							if(isset($_SESSION['username'])) {
+								echo $userName;
+							}
+						?></a></li>
+				  </dl>
+				  
+				  
+				</div><!-- /.navbar-collapse -->
+			</div>
 			
-			<ul class="nav navbar-nav navbar-right">
-			  <li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">UserName <b class="caret"></b></a>
-				<ul class="dropdown-menu">
-				  <li><a href="#">About us</a></li>
-				  <li><a href="#">Account Setting</a></li>
-				  <li class="divider"></li>
-				  <li><a href="#">Log Out</a></li>
-				</ul>
-			  </li>
-			</ul>
-		  </div><!-- /.navbar-collapse -->
+		  </div><!-- /.container -->
 		</nav>
+		<br><br><br><br>
 		
 		
 		<!--the category section-->
 		  <div class="col-md-2">
-			<!--the button set section-->
-			<div class="btn-group-vertical center-block" style="margin:10px">
-			  <a href = "#createboard" data-toggle="modal">
-				<button type="button" class="btn btn-default" >Create Board</button>
-			  </a>
-			</div>
-			
 			
 			<!--the category section-->
 			<div class="list-group center-block" style="margin:10px">
 			  <h2>Category</h2>
-			  <a href="#" class="list-group-item active">
-				Nu Jazz
-			  </a>
-			  <a href="#" class="list-group-item">R&B</a>
-			  <a href="#" class="list-group-item">Rock & Roll</a>
-			  <a href="#" class="list-group-item">House</a>
-			  <a href="#" class="list-group-item">Techo</a>
+			  <a href="#createboard" data-toggle="modal" class="list-group-item">Create Board</a>
+			  <a href="all_board.php" class="list-group-item">My Board</a>
+			  <a href="#" class="list-group-item">My Tacks</a>
+			  <a href="#" class="list-group-item">Search Friends</a>
 			  <script>
 				$('.list-group-item').on('click',function(e){
 					var previous = $(this).closest(".list-group").children(".active");
@@ -132,25 +131,33 @@
 								<div class=\"caption\">
 								<h4>".$row['tackName']."</h4>
 								<p class=\"tackDes\">".$row['tackDescription']."</p>
-								<p align=\"right\">
-								<form>
-								<a class=\"btn btn-danger \" role=\"button\"><span class=\"glyphicon glyphicon-remove\"></span></a>
-								<a class=\"btn btn-primary\" role=\"button\"><span class=\"glyphicon glyphicon-pushpin\"></span></a>
+								<form  id=\"deletetack_btn\" action=\"deletetack.php?DtackId=".$row['tackId']."\" method=\"post\">
+									<p align=\"right\">
+									<a onclick=\"DeleteTack();\" class=\"btn btn-danger \" data-dismiss = \"modal\">
+										<span class=\"glyphicon glyphicon-remove\"></span>
+									</a>
+									<a class=\"btn btn-primary\" role=\"button\"><span class=\"glyphicon glyphicon-pushpin\"></span></a>
+									</p>
 								</form>
-								</p>
 								</div>
 								</div>
 								</div>";
 							}
 					  ?>
-							
+					  <script type="text/javascript">
+						function DeleteTack()
+						 {
+							   alert('Are you sure you want to delete');
+							   document.getElementById('deletetack_btn').submit();
+						 }
+					  </script>
 					</div>
 				</div>
 			</div>
 		  </div>
 			
 		<!--CreateTack form-->
-		<form action="inserttack.php" name="createtack" method="post">
+		<form action="<?php echo 'inserttack.php?boardId='.$boardId ?>" name="createtack" method="post">
 		<div class = "modal fade" id = "createtack" role ="dialog">
 			<div class ="modal-dialog">
 				<div class = "modal-content">
@@ -180,7 +187,7 @@
 					</div>
 				</div>
 			</div>
-			</div>
+		</div>
 
 			<script type="text/javascript">
 
