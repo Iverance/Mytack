@@ -152,7 +152,7 @@
 								</script>
 								<div class=\"caption\">
 								<h4>".$row['tackName']."</h4>
-								<p class=\"tackDes\">".$row['tackDescription'].$row['tackId']."</p>
+								<p class=\"tackDes\">".$row['tackDescription']."</p>
 								
 									<p align=\"right\">
 									<a href=\"deletetack.php?DtackId=".$row['tackId']."\" class=\"btn btn-danger \" data-dismiss = \"modal\">
@@ -215,7 +215,6 @@
 
 			 function submitForm()
 			 {
-				   alert('sub');
 				   document.createtack.submit();
 			 }
 			</script>
@@ -266,7 +265,6 @@
 			<script type="text/javascript">
 			 function submitForm1()
 			 {
-				   alert('sub');
 				   document.createboard.submit();
 			 }
 			</script>

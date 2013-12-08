@@ -233,7 +233,6 @@
 
 			 function submitForm()
 			 {
-				   alert('sub');
 				   document.createtack.submit();
 			 }
 			</script>
@@ -282,7 +281,6 @@
 			<script type="text/javascript">
 			 function submitForm1()
 			 {
-				   alert('sub');
 				   document.createboard.submit();
 			 }
 			</script>

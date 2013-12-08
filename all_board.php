@@ -135,11 +135,7 @@
 								<h4>".$row['BoardTitle']."</h4>
 								<p class=\"tackDes\">".$row['BoardDesc']."</p>
 								
-									<p align=\"right\">
-									<a href=\"deleteboard.php?DboardId=".$row['BoardId']."\" class=\"btn btn-danger \" data-dismiss = \"modal\">
-										<span class=\"glyphicon glyphicon-remove\"></span>
-									</a>
-									</p>
+									
 								
 							</div>
 						</div>
@@ -147,13 +143,19 @@
 					</div>";
 				}
 		  ?>
+		  <!--Delete function (NOT USE NOW)
+		  <p align=\"right\">
+			<a href=\"deleteboard.php?DboardId=".$row['BoardId']."\" class=\"btn btn-danger \" data-dismiss = \"modal\">
+				<span class=\"glyphicon glyphicon-remove\"></span>
+			</a>
+		  </p>
 		  <script type="text/javascript">
 			function DeleteTack()
 			 {
 				   alert('Are you sure you want to delete');
 				   document.getElementById('deletetack_btn').submit();
 			 }
-		  </script>
+		  </script>-->
 			
 		  
 		  </div>
@@ -203,7 +205,6 @@
 			<script type="text/javascript">
 			 function submitForm1()
 			 {
-				   alert('sub');
 				   document.createboard.submit();
 			 }
 			</script>

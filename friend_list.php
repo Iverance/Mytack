@@ -188,7 +188,6 @@
 			<script type="text/javascript">
 			 function submitForm1()
 			 {
-				   alert('sub');
 				   document.createboard.submit();
 			 }
 			</script>

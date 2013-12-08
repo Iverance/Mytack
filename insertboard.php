@@ -32,7 +32,7 @@
 		}
 		else 
 		{
-			header( 'Location: http://localhost/Mytack/homepage/all_board.php' ) ;	
+			header( 'Location: all_board.php' ) ;	
 		}
 	}
 
