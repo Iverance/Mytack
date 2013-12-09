@@ -9,8 +9,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET")
 			header( 'Location: ' .$_SERVER['HTTP_REFERER'] ) ;
 		}
 		else
-		{
-			die('Error: ' . mysqli_error($con));
+		{	
+			header( 'Location: all_board.php?sqlerror=foreign' );
+			//die('Error: ' . mysqli_error($con));
 		}
 	}
 ?>

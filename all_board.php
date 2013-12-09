@@ -28,6 +28,25 @@
 	mysqli_close($con);
 ?>
 
+<script type="text/javascript">
+
+	var error = getUrlVars()["sqlerror"];
+	
+	if (typeof error != "undefined") {
+		if(error='foreign') {
+			alert("You still have tack in your board!");
+		}
+	}
+
+	function getUrlVars() {
+		var vars = {};
+		var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+			vars[key] = value;
+		});
+		return vars;
+	}
+</script>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -135,6 +154,11 @@
 								<h4>".$row['BoardTitle']."</h4>
 								<p class=\"tackDes\">".$row['BoardDesc']."</p>
 								
+								<p align=\"right\">
+									<a href=\"deleteboard.php?DboardId=".$row['BoardId']."\" class=\"btn btn-danger \" data-dismiss = \"modal\">
+										<span class=\"glyphicon glyphicon-remove\"></span>
+									</a>
+								</p>
 									
 								
 							</div>
@@ -144,11 +168,7 @@
 				}
 		  ?>
 		  <!--Delete function (NOT USE NOW)
-		  <p align=\"right\">
-			<a href=\"deleteboard.php?DboardId=".$row['BoardId']."\" class=\"btn btn-danger \" data-dismiss = \"modal\">
-				<span class=\"glyphicon glyphicon-remove\"></span>
-			</a>
-		  </p>
+		  
 		  <script type="text/javascript">
 			function DeleteTack()
 			 {
